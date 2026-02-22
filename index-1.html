@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthyAuth | GLP-1 Prior Authorization Specialists</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0a1628;
+      --navy-mid: #112240;
+      --teal: #00c9a7;
+      --teal-dim: #00c9a730;
+      --gold: #f4c542;
+      --white: #f0f4f8;
+      --muted: #8899aa;
+      --card-bg: #0f1e36;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 6vw;
+      background: rgba(10,22,40,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,201,167,0.15);
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--teal); }
+    nav ul { list-style: none; display: flex; gap: 2.2rem; }
+    nav ul a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--teal); color: var(--navy) !important;
+      padding: 0.5rem 1.3rem; border-radius: 6px; font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: #00b896; color: var(--navy) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 6vw 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(0,201,167,0.09) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 50% at 20% 80%, rgba(244,197,66,0.06) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.04;
+      background-image: linear-gradient(var(--teal) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--teal) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 680px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--teal-dim); border: 1px solid rgba(0,201,167,0.3);
+      color: var(--teal); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 20px; margin-bottom: 1.8rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-tag::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      line-height: 1.1; letter-spacing: -1px;
+      color: var(--white);
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1 em { font-style: italic; color: var(--teal); }
+    .hero-sub {
+      margin-top: 1.5rem; font-size: 1.1rem; color: var(--muted);
+      line-height: 1.7; max-width: 520px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .hero-actions {
+      margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--teal); color: var(--navy);
+      padding: 0.9rem 2rem; border-radius: 8px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 24px rgba(0,201,167,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(0,201,167,0.45); }
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+      padding: 0.9rem 2rem; border-radius: 8px;
+      font-weight: 500; font-size: 1rem; text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--teal); background: rgba(0,201,167,0.07); }
+
+    .hero-price-badge {
+      margin-top: 3rem; display: inline-flex; align-items: baseline; gap: 0.4rem;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .price-num {
+      font-family: 'DM Serif Display', serif; font-size: 3.5rem; color: var(--gold);
+      line-height: 1;
+    }
+    .price-label { font-size: 0.9rem; color: var(--muted); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      background: var(--card-bg);
+      border-top: 1px solid rgba(0,201,167,0.1);
+      border-bottom: 1px solid rgba(0,201,167,0.1);
+      padding: 2rem 6vw;
+      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--teal);
+    }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; letter-spacing: 0.5px; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 6rem 6vw; }
+    .section-tag {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 0.8rem;
+    }
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15; letter-spacing: -0.5px;
+      color: var(--white); margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 520px; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--navy-mid); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-features { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .feature-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: rgba(0,201,167,0.05); border: 1px solid rgba(0,201,167,0.12);
+      border-radius: 10px; padding: 1.2rem 1.4rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .feature-item:hover { border-color: rgba(0,201,167,0.35); background: rgba(0,201,167,0.09); }
+    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .feature-title { font-weight: 600; color: var(--white); font-size: 0.95rem; }
+    .feature-desc { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+    .about-visual {
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .about-card-main {
+      background: var(--card-bg); border: 1px solid rgba(0,201,167,0.2);
+      border-radius: 16px; padding: 2rem; width: 100%; max-width: 320px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .about-card-main h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 1.2rem; }
+    .step-row { display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1rem; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--teal-dim); border: 1px solid var(--teal);
+      color: var(--teal); font-size: 0.75rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-text { font-size: 0.85rem; color: var(--muted); }
+    .step-text strong { color: var(--white); display: block; font-size: 0.88rem; }
+    .about-float {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--navy); border: 1px solid var(--gold);
+      border-radius: 12px; padding: 1rem 1.4rem;
+      text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .about-float .big { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--gold); }
+    .about-float .sm { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--navy); }
+    .services-intro { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 3rem; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .card {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 2rem;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(0,201,167,0.25); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .card:hover::before { transform: scaleX(1); }
+    .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .card h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.6rem; }
+    .card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── PRICING ── */
+    #pricing { background: var(--navy-mid); }
+    .pricing-center { text-align: center; margin-bottom: 3rem; }
+    .pricing-center .section-sub { margin: 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+    .price-card {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 2.2rem;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .price-card.featured {
+      border-color: var(--teal);
+      box-shadow: 0 0 40px rgba(0,201,167,0.2);
+      position: relative;
+    }
+    .featured-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--teal); color: var(--navy);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 0.3rem 1rem; border-radius: 20px;
+    }
+    .price-card:hover { transform: translateY(-4px); border-color: rgba(0,201,167,0.4); }
+    .price-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .price-amount {
+      font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--gold);
+      margin: 1rem 0 0.3rem;
+    }
+    .price-amount span { font-size: 1rem; color: var(--muted); font-family: 'DM Sans', sans-serif; }
+    .price-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .price-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+    .price-list li { font-size: 0.88rem; color: var(--muted); display: flex; gap: 0.5rem; }
+    .price-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .btn-card {
+      width: 100%; padding: 0.8rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.95rem; text-align: center;
+      text-decoration: none; display: block; transition: 0.2s;
+    }
+    .btn-card-primary { background: var(--teal); color: var(--navy); }
+    .btn-card-primary:hover { background: #00b896; }
+    .btn-card-outline { border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+    .btn-card-outline:hover { border-color: var(--teal); background: rgba(0,201,167,0.07); }
+
+    /* ── WHY US ── */
+    #why { background: var(--navy); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .why-points { display: flex; flex-direction: column; gap: 1.8rem; margin-top: 2rem; }
+    .why-point { display: flex; gap: 1.2rem; }
+    .why-num {
+      font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--teal-dim);
+      min-width: 40px; line-height: 1;
+    }
+    .why-point h4 { font-weight: 600; font-size: 1rem; margin-bottom: 0.3rem; }
+    .why-point p { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+    .why-visual {
+      background: var(--card-bg); border: 1px solid rgba(0,201,167,0.15);
+      border-radius: 16px; padding: 2rem; text-align: center;
+    }
+    .glp1-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin: 1.5rem 0; }
+    .pill {
+      background: rgba(0,201,167,0.1); border: 1px solid rgba(0,201,167,0.25);
+      color: var(--teal); font-size: 0.8rem; font-weight: 600;
+      padding: 0.4rem 0.9rem; border-radius: 20px;
+    }
+    .approval-rate {
+      margin-top: 1.5rem;
+      background: rgba(244,197,66,0.08); border: 1px solid rgba(244,197,66,0.2);
+      border-radius: 10px; padding: 1.2rem;
+    }
+    .approval-rate .big { font-family: 'DM Serif Display', serif; font-size: 2.8rem; color: var(--gold); }
+    .approval-rate .sm { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--navy-mid); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .testimonial {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 2rem;
+    }
+    .stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testimonial p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; font-style: italic; }
+    .testimonial-author { margin-top: 1.2rem; display: flex; gap: 0.8rem; align-items: center; }
+    .author-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; font-weight: 700; color: var(--navy);
+    }
+    .author-name { font-size: 0.9rem; font-weight: 600; }
+    .author-role { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--navy); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+    .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .contact-icon { font-size: 1.2rem; }
+    .contact-item h4 { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .contact-item p { font-size: 0.85rem; color: var(--muted); }
+    form { display: flex; flex-direction: column; gap: 1rem; }
+    input, textarea, select {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; padding: 0.9rem 1.1rem; border-radius: 8px;
+      outline: none; transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--teal); }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    textarea { resize: vertical; min-height: 120px; }
+    select option { background: var(--navy-mid); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    button[type="submit"] {
+      background: var(--teal); color: var(--navy); border: none;
+      padding: 1rem; border-radius: 8px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s, transform 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    button[type="submit"]:hover { background: #00b896; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050d1a;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2.5rem 6vw;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; }
+    .footer-logo span { color: var(--teal); }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--teal); }
+
+    /* HIPAA badge */
+    .hipaa-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,201,167,0.08); border: 1px solid rgba(0,201,167,0.2);
+      color: var(--teal); font-size: 0.78rem; font-weight: 600;
+      padding: 0.35rem 0.9rem; border-radius: 20px; margin-top: 1.5rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .about-grid, .why-grid, .contact-grid { grid-template-columns: 1fr; }
+      .about-float { position: static; margin-top: 1rem; display: inline-block; }
+      .about-visual { flex-direction: column; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Healthy<span>Auth</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">GLP-1 Prior Authorization Experts</div>
+    <h1>We Get Your<br><em>GLP-1 Auths</em><br>Approved. Fast.</h1>
+    <p class="hero-sub">
+      Specialized prior authorization support for Ozempic, Wegovy, Mounjaro, and Zepbound. 
+      Flat-rate pricing, 24-hour turnaround, zero hassle for your practice.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start Saving Time Today</a>
+      <a href="#pricing" class="btn-secondary">See Pricing →</a>
+    </div>
+    <div class="hero-price-badge">
+      <div class="price-num">$5</div>
+      <div class="price-label">flat rate<br>per authorization</div>
+    </div>
+    <div class="hipaa-badge">🔒 HIPAA Compliant · BAA Available</div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat">
+    <div class="stat-num">24hr</div>
+    <div class="stat-label">Turnaround Time</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">$5</div>
+    <div class="stat-label">Per Authorization</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">GLP-1</div>
+    <div class="stat-label">Specialist Focus</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">US</div>
+    <div class="stat-label">Insurance Experience</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Setup Fees</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-tag">About HealthyAuth</div>
+      <h2>Prior Auth That Works While You Sleep</h2>
+      <p class="section-sub">
+        We are a dedicated GLP-1 prior authorization team helping US physician practices, 
+        weight loss clinics, and telehealth companies eliminate the burden of insurance 
+        paperwork — at an unbeatable flat rate.
+      </p>
+      <div class="about-features">
+        <div class="feature-item">
+          <div class="feature-icon">🎯</div>
+          <div>
+            <div class="feature-title">GLP-1 Only Specialization</div>
+            <div class="feature-desc">We know Ozempic, Wegovy, Mounjaro, and Zepbound criteria inside-out across all major payers.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <div>
+            <div class="feature-title">24-Hour Initiation</div>
+            <div class="feature-desc">Submit patient info, we handle the rest. Auth initiated within one business day, guaranteed.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📞</div>
+          <div>
+            <div class="feature-title">Follow-Ups & Appeals</div>
+            <div class="feature-desc">We don't stop at initiation. We track, follow up, and escalate denials so your team doesn't have to.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-card-main">
+        <h3>Our Process</h3>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Receive Patient Info</strong>Secure intake via HIPAA-compliant form</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Verify Payer Criteria</strong>Check plan requirements & medical necessity docs</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Submit Authorization</strong>Initiate with payer within 24 hours</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Track & Update</strong>Follow up until decision — you get notified</div>
+        </div>
+      </div>
+      <div class="about-float">
+        <div class="big">$0</div>
+        <div class="sm">Setup fees<br>No contracts</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-intro">
+    <div>
+      <div class="section-tag">What We Handle</div>
+      <h2>Every Step of the Auth Process</h2>
+    </div>
+    <p class="section-sub">From initiation to approval — we cover the full prior authorization lifecycle for GLP-1 medications.</p>
+  </div>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>Auth Initiation</h3>
+      <p>Complete prior auth submission to commercial, Medicare, and Medicaid payers for all GLP-1 drugs. Done within 24 hours of receiving patient info.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📞</div>
+      <h3>Status Follow-Up</h3>
+      <p>We call payers, check portals, and chase every pending authorization so your staff doesn't have to wait on hold for hours.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚠️</div>
+      <h3>Denial Management</h3>
+      <p>We identify denial reasons, gather additional documentation, and submit peer-to-peer request guidance to support appeals.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>Re-Authorizations</h3>
+      <p>Managing renewal timelines so patients never have a gap in their GLP-1 therapy. We track expiration dates and initiate re-auths proactively.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Status Reporting</h3>
+      <p>Weekly summary reports showing pending, approved, and denied auths — full visibility into your patient pipeline at all times.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💊</div>
+      <h3>GLP-1 Drugs Covered</h3>
+      <p>Ozempic · Wegovy · Mounjaro · Zepbound · Saxenda · Rybelsus — across commercial plans, Medicare Part D, and select Medicaid programs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-center">
+    <div class="section-tag">Simple, Flat-Rate Pricing</div>
+    <h2>No Surprises. Ever.</h2>
+    <p class="section-sub">Pay only for what you need. No monthly retainers, no setup costs, no hidden fees.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>Initiation Only</h3>
+      <div class="price-amount">$5 <span>/ auth</span></div>
+      <div class="price-desc">Just the submission — ideal for high-volume practices with in-house follow-up teams.</div>
+      <ul class="price-list">
+        <li>Prior auth initiation within 24 hrs</li>
+        <li>Payer criteria verification</li>
+        <li>Confirmation notification</li>
+        <li>HIPAA-compliant intake</li>
+        <li>BAA signed on request</li>
+      </ul>
+      <a href="#contact" class="btn-card btn-card-outline">Get Started</a>
+    </div>
+    <div class="price-card featured">
+      <div class="featured-badge">Most Popular</div>
+      <h3>Full Service</h3>
+      <div class="price-amount">$12 <span>/ auth</span></div>
+      <div class="price-desc">From initiation to approval — we handle everything until a decision is made.</div>
+      <ul class="price-list">
+        <li>Everything in Initiation</li>
+        <li>Payer follow-up calls</li>
+        <li>Status updates to your team</li>
+        <li>Denial reason identification</li>
+        <li>Appeal documentation support</li>
+        <li>Re-auth tracking & renewal</li>
+      </ul>
+      <a href="#contact" class="btn-card btn-card-primary">Get Started</a>
+    </div>
+    <div class="price-card">
+      <h3>High Volume</h3>
+      <div class="price-amount" style="font-size:2rem; padding-top:0.5rem;">Custom</div>
+      <div class="price-desc">For practices submitting 100+ auths/month. Volume discounts available.</div>
+      <ul class="price-list">
+        <li>Everything in Full Service</li>
+        <li>Dedicated account manager</li>
+        <li>Custom reporting dashboard</li>
+        <li>Priority turnaround (same-day)</li>
+        <li>Monthly strategy review</li>
+      </ul>
+      <a href="#contact" class="btn-card btn-card-outline">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="why-grid">
+    <div>
+      <div class="section-tag">Why HealthyAuth</div>
+      <h2>Built for the GLP-1 Boom</h2>
+      <p class="section-sub">GLP-1 medications are the fastest-growing drug category in the US — and prior auth denials are the #1 barrier to patient access. We solve that.</p>
+      <div class="why-points">
+        <div class="why-point">
+          <div class="why-num">01</div>
+          <div>
+            <h4>Deep GLP-1 Expertise</h4>
+            <p>We know each payer's step therapy requirements, BMI thresholds, and diabetes diagnosis criteria — ensuring every submission is optimized for approval.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-num">02</div>
+          <div>
+            <h4>Flat Rate — No Surprises</h4>
+            <p>Unlike billing companies charging 3–7% of claims, we charge a simple $5 flat rate per auth initiation. High volume? We'll discount.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-num">03</div>
+          <div>
+            <h4>Your Staff Gets Time Back</h4>
+            <p>The average GLP-1 prior auth takes 2–3 hours of staff time per case. Give that time back to patient care, not paperwork.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-num">04</div>
+          <div>
+            <h4>HIPAA Compliant & Signed BAA</h4>
+            <p>We operate under full HIPAA compliance. Business Associate Agreements (BAA) signed with every client — no exceptions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual">
+      <div class="section-tag" style="text-align:center">GLP-1 Medications We Cover</div>
+      <div class="glp1-pills">
+        <div class="pill">Ozempic</div>
+        <div class="pill">Wegovy</div>
+        <div class="pill">Mounjaro</div>
+        <div class="pill">Zepbound</div>
+        <div class="pill">Saxenda</div>
+        <div class="pill">Rybelsus</div>
+        <div class="pill">Victoza</div>
+        <div class="pill">Trulicity</div>
+      </div>
+      <div class="approval-rate">
+        <div class="big">95%</div>
+        <div class="sm">of GLP-1 denials are overturnable<br>with proper documentation</div>
+      </div>
+      <p style="font-size:0.8rem; color:var(--muted); margin-top:1.2rem; line-height:1.6;">
+        The average US practice spends <strong style="color:var(--white)">11 hours per week</strong> on prior authorizations. 
+        We give you that time back — for <strong style="color:var(--teal)">less than the cost of 1 hour of staff time</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-tag" style="text-align:center">What Clients Say</div>
+  <h2 style="text-align:center">Trusted by US Practices</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"We were spending 3 hours per GLP-1 auth on hold with insurance. HealthyAuth cut that to zero. My staff is actually happy now."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--teal)">JM</div>
+        <div>
+          <div class="author-name">Dr. Jennifer M.</div>
+          <div class="author-role">Endocrinologist, Texas</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"We do 80+ GLP-1 auths a month. At $5 each, the ROI is incredible. Our approval rate went up and our team stress went way down."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--gold)">RB</div>
+        <div>
+          <div class="author-name">Robert B.</div>
+          <div class="author-role">Office Manager, Weight Loss Clinic, Florida</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"I was skeptical about outsourcing to an offshore team, but they know payer criteria better than we do. Fast, professional, HIPAA-compliant."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:#a855f7">ST</div>
+        <div>
+          <div class="author-name">Sarah T.</div>
+          <div class="author-role">Practice Administrator, New York</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="section-tag">Get In Touch</div>
+      <h2>Let's Get Your Auths Moving</h2>
+      <p class="section-sub">Fill out the form and we'll get back to you within 24 hours with a custom plan for your practice.</p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <p>hello@healthyauth.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💬</div>
+          <div>
+            <h4>WhatsApp / Text</h4>
+            <p>Available for quick consultations</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <h4>Response Time</h4>
+            <p>Within 24 business hours</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🔒</div>
+          <div>
+            <h4>HIPAA Compliant</h4>
+            <p>BAA signed before any PHI is shared</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <input type="text" placeholder="Your Name *" required />
+          <input type="text" placeholder="Practice Name *" required />
+        </div>
+        <div class="form-row">
+          <input type="email" placeholder="Email Address *" required />
+          <input type="tel" placeholder="Phone / WhatsApp" />
+        </div>
+        <select>
+          <option value="" disabled selected>Monthly GLP-1 Auth Volume</option>
+          <option>1–20 auths/month</option>
+          <option>21–50 auths/month</option>
+          <option>51–100 auths/month</option>
+          <option>100+ auths/month</option>
+        </select>
+        <select>
+          <option value="" disabled selected>Practice Type</option>
+          <option>Endocrinology</option>
+          <option>Primary Care / Internal Medicine</option>
+          <option>Obesity Medicine / Weight Loss Clinic</option>
+          <option>Telehealth Company</option>
+          <option>Medical Billing Company</option>
+          <option>Other</option>
+        </select>
+        <textarea placeholder="Tell us about your current prior auth challenges (optional)"></textarea>
+        <button type="submit">Send Message — We'll Reply in 24hrs</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Healthy<span>Auth</span></div>
+  <p>© 2025 HealthyAuth. HIPAA Compliant. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Form submit handler
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Message Sent! We\'ll be in touch soon.';
+    btn.style.background = '#00b896';
+    btn.disabled = true;
+  }
+
+  // Animate stats on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.card, .price-card, .testimonial, 
